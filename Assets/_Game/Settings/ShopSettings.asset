@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e8cb5f6d02f2e42ab1df0a5e56a70e, type: 3}
+  m_Name: ShopSettings
+  m_EditorClassIdentifier: Assembly-CSharp::PriceForgeClicker.Settings.ShopSettings
+  _items:
+  - _sku: CLK-HAMMER
+    _title: "\u041C\u043E\u043B\u043E\u0442"
+    _icon: {fileID: 21300000, guid: ee89801b35359154c9149624b11b8d41, type: 3}
+    _effect: 0
+    _effectValue: 1
+    _localPrice: 50
+    _localSalePercent: 0
+  - _sku: CLK-MAGNET
+    _title: "\u041C\u0430\u0433\u043D\u0438\u0442"
+    _icon: {fileID: 21300000, guid: 3f55fd4a442c8724393bc69e4827e56a, type: 3}
+    _effect: 1
+    _effectValue: 1
+    _localPrice: 100
+    _localSalePercent: 20
+  - _sku: CLK-LUCKY
+    _title: "\u0421\u0447\u0430\u0441\u0442\u043B\u0438\u0432\u0430\u044F \u043C\u043E\u043D\u0435\u0442\u0430"
+    _icon: {fileID: 21300000, guid: 790210f59d034b445b6c823d84799af5, type: 3}
+    _effect: 0
+    _effectValue: 5
+    _localPrice: 400
+    _localSalePercent: 0
+  - _sku: CLK-HOURGLASS
+    _title: "\u041F\u0435\u0441\u043E\u0447\u043D\u044B\u0435 \u0447\u0430\u0441\u044B"
+    _icon: {fileID: 21300000, guid: 4193750d3963b314caad547e14753a18, type: 3}
+    _effect: 1
+    _effectValue: 5
+    _localPrice: 750
+    _localSalePercent: 30
+  - _sku: CLK-CROWN
+    _title: "\u041A\u043E\u0440\u043E\u043D\u0430"
+    _icon: {fileID: 21300000, guid: 5857ac7575dab3447bffd7dd526be264, type: 3}
+    _effect: 2
+    _effectValue: 1
+    _localPrice: 2500
+    _localSalePercent: 0
+  _localSaleMinutes: 30

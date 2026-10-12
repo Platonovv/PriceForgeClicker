@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6793c359b5b6e64c853daffc355e23c, type: 3}
+  m_Name: UiSettings
+  m_EditorClassIdentifier: Assembly-CSharp::PriceForgeClicker.Settings.UiSettings
+  _shopItemElementPrefab: {fileID: 3553570055256868321, guid: eb0b0781cdcb40544977dce302c49a3f, type: 3}
+  _floatingRewardPrefab: {fileID: 5505902402133954603, guid: c33d4608a811e9b449538c17a54f941b, type: 3}
+  _floatingRewardPoolSize: 12
+  _floatingRewardSpread: 180
+  _punchScale: 0.9
+  _punchDuration: 0.12

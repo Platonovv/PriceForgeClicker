@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b2b5079b7b13fc44b04abb6a4224ca3, type: 3}
+  m_Name: GameSettings
+  m_EditorClassIdentifier: Assembly-CSharp::PriceForgeClicker.Settings.GameSettings
+  _clickerSettings: {fileID: 11400000, guid: 4c2dcf54db4cbb34393d789e9930fcdd, type: 2}
+  _shopSettings: {fileID: 11400000, guid: fb9ebf3d55caa0747b32a640d70f26ce, type: 2}
+  _uiSettings: {fileID: 11400000, guid: b3fc354906d454841a5cee539752abac, type: 2}
