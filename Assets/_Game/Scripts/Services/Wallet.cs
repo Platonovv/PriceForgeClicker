@@ -29,6 +29,7 @@ namespace PriceForgeClicker.Services
         public void Unsubscribe(Action listener) => OnChanged -= listener;
 
         public void Add(long amount) => Coins += amount;
+        public void SetBalance(long balance) => Coins = balance;
 
         public bool TrySpend(long amount)
         {

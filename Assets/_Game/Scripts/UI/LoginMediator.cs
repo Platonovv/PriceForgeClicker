@@ -2,17 +2,20 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using PriceForgeClicker.Network;
+using PriceForgeClicker.Services;
 
 namespace PriceForgeClicker.UI
 {
     public sealed class LoginMediator
     {
+        private readonly Wallet _wallet;
         private readonly LoginView _view;
         private readonly ApiClient _apiClient;
 
-        public LoginMediator(LoginView view, ApiClient apiClient)
+        public LoginMediator(LoginView view, ApiClient apiClient, Wallet wallet)
         {
             _view = view;
+            _wallet = wallet;
             _apiClient = apiClient;
         }
 
@@ -62,7 +65,11 @@ namespace PriceForgeClicker.UI
         }
 
         private async UniTask LoginAsync(CancellationToken ct)
-            => await _apiClient.LoginAsync(_view.Email, _view.Password, ct);
+        {
+            await _apiClient.LoginAsync(_view.Email, _view.Password, ct);
+            long balanceAsync = await _apiClient.GetBalanceAsync(ct);
+            _wallet.SetBalance(balanceAsync);
+        }
 
         private void ShowError(long responseCode)
         {
