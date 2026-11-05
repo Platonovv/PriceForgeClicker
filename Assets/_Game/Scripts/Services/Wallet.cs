@@ -1,5 +1,4 @@
 using System;
-using PriceForgeClicker.Settings;
 
 namespace PriceForgeClicker.Services
 {
@@ -24,11 +23,25 @@ namespace PriceForgeClicker.Services
             }
         }
 
+        public long PendingCoins { get; private set; }
+
         public void Subscribe(Action listener) => OnChanged += listener;
 
         public void Unsubscribe(Action listener) => OnChanged -= listener;
 
-        public void Add(long amount) => Coins += amount;
+        public void Add(long amount)
+        {
+            Coins += amount;
+            PendingCoins += amount;
+        }
+
+        public long TakePending(long max)
+        {
+            long pendingCoins = Math.Min(PendingCoins, max);
+            PendingCoins -= pendingCoins;
+            return pendingCoins;
+        }
+
         public void SetBalance(long balance) => Coins = balance;
 
         public bool TrySpend(long amount)
