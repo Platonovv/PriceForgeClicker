@@ -1,3 +1,4 @@
+using PriceForgeClicker.Network;
 using PriceForgeClicker.Services;
 using PriceForgeClicker.Settings;
 using PriceForgeClicker.Shop;
@@ -14,6 +15,7 @@ namespace PriceForgeClicker.Bootstrap
         [SerializeField] private GameSettings _gameSettings;
 
         [Header("Views")]
+        [SerializeField] private LoginView _loginView;
         [SerializeField] private ClickerView _clickerView;
         [SerializeField] private ShopView _shopView;
 
@@ -33,6 +35,7 @@ namespace PriceForgeClicker.Bootstrap
 
         private void RegisterServices(IContainerBuilder builder)
         {
+            builder.Register<ApiClient>(Lifetime.Singleton);
             builder.Register<Wallet>(Lifetime.Singleton);
             builder.Register<ClickerState>(Lifetime.Singleton);
             builder.Register<ClickerService>(Lifetime.Singleton);
@@ -42,8 +45,10 @@ namespace PriceForgeClicker.Bootstrap
 
         private void RegisterUi(IContainerBuilder builder)
         {
+            builder.RegisterComponent(_loginView);
             builder.RegisterComponent(_clickerView);
             builder.RegisterComponent(_shopView);
+            builder.Register<LoginMediator>(Lifetime.Singleton);
             builder.Register<ClickerMediator>(Lifetime.Singleton);
             builder.RegisterEntryPoint<ShopMediator>().AsSelf();
         }
