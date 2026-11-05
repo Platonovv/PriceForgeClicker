@@ -35,7 +35,10 @@ namespace PriceForgeClicker.Bootstrap
 
         private void RegisterServices(IContainerBuilder builder)
         {
+            builder.Register<AuthSession>(Lifetime.Singleton);
             builder.Register<ApiClient>(Lifetime.Singleton);
+            builder.Register<AuthApi>(Lifetime.Singleton);
+            builder.Register<WalletApi>(Lifetime.Singleton);
             builder.Register<Wallet>(Lifetime.Singleton);
             builder.Register<ClickerState>(Lifetime.Singleton);
             builder.Register<ClickerService>(Lifetime.Singleton);

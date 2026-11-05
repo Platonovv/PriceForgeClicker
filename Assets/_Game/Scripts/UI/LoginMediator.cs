@@ -10,13 +10,15 @@ namespace PriceForgeClicker.UI
     {
         private readonly Wallet _wallet;
         private readonly LoginView _view;
-        private readonly ApiClient _apiClient;
+        private readonly AuthApi _authApi;
+        private readonly WalletApi _walletApi;
 
-        public LoginMediator(LoginView view, ApiClient apiClient, Wallet wallet)
+        public LoginMediator(LoginView view, AuthApi authApi, WalletApi walletApi, Wallet wallet)
         {
             _view = view;
             _wallet = wallet;
-            _apiClient = apiClient;
+            _authApi = authApi;
+            _walletApi = walletApi;
         }
 
         public event Action OnLoggedIn;
@@ -60,15 +62,15 @@ namespace PriceForgeClicker.UI
 
         private async UniTask RegisterAndLoginAsync(CancellationToken ct)
         {
-            await _apiClient.RegisterAsync(_view.Email, _view.Password, ct);
+            await _authApi.RegisterAsync(_view.Email, _view.Password, ct);
             await LoginAsync(ct);
         }
 
         private async UniTask LoginAsync(CancellationToken ct)
         {
-            await _apiClient.LoginAsync(_view.Email, _view.Password, ct);
-            long balanceAsync = await _apiClient.GetBalanceAsync(ct);
-            _wallet.SetBalance(balanceAsync);
+            await _authApi.LoginAsync(_view.Email, _view.Password, ct);
+            long balance = await _walletApi.GetBalanceAsync(ct);
+            _wallet.SetBalance(balance);
         }
 
         private void ShowError(long responseCode)

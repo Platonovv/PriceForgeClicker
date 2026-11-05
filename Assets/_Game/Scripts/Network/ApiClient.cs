@@ -8,52 +8,67 @@ namespace PriceForgeClicker.Network
     public sealed class ApiClient
     {
         private const string Address = "http://localhost:8080";
-        private const string RegisterPath = "/api/v1/auth/register";
-        private const string LoginPath = "/api/v1/auth/login";
-        private const string WalletPath = "/api/v1/wallet";
+        private const string JsonContentType = "application/json";
+        private const string AuthorizationHeader = "Authorization";
+        private const string IdempotencyKeyHeader = "Idempotency-Key";
 
-        private string _loginToken;
+        private readonly AuthSession _session;
 
-        public async UniTask RegisterAsync(string email, string password, CancellationToken cancellationToken)
+        public ApiClient(AuthSession session)
         {
-            AuthRequest authRequest = new AuthRequest(email, password);
-            await PostJsonAsync(RegisterPath, authRequest, cancellationToken);
+            _session = session;
         }
 
-        public async UniTask LoginAsync(string email, string password, CancellationToken cancellationToken)
+        public async UniTask<T> GetAsync<T>(string path, CancellationToken cancellationToken)
         {
-            AuthRequest authRequest = new AuthRequest(email, password);
-            string response = await PostJsonAsync(LoginPath, authRequest, cancellationToken);
-            _loginToken = JsonConvert.DeserializeObject<LoginClientResponse>(response).AccessToken;
+            string response = await SendAsync(UnityWebRequest.Get(Address + path), cancellationToken);
+            return JsonConvert.DeserializeObject<T>(response);
         }
 
-        public async UniTask<long> GetBalanceAsync(CancellationToken cancellationToken)
+        public async UniTask PostAsync(string path, object body, CancellationToken cancellationToken)
         {
-            string response = await GetJsonAsync(WalletPath, cancellationToken);
-            return JsonConvert.DeserializeObject<long>(response);
+            await SendAsync(CreatePost(path, body, null), cancellationToken);
         }
 
-        private async UniTask<string> GetJsonAsync(string path, CancellationToken ct)
+        public async UniTask<T> PostAsync<T>(
+            string path,
+            object body,
+            CancellationToken cancellationToken,
+            string idempotencyKey = null)
         {
-            using UnityWebRequest request = UnityWebRequest.Get(Address + path);
-
-            request.SetRequestHeader("Authorization", $"Bearer {_loginToken}");
-
-            UnityWebRequest response = await request.SendWebRequest().ToUniTask(cancellationToken: ct);
-
-            return response.downloadHandler.text;
+            string response = await SendAsync(CreatePost(path, body, idempotencyKey), cancellationToken);
+            return JsonConvert.DeserializeObject<T>(response);
         }
 
-        private async UniTask<string> PostJsonAsync(string path, object body, CancellationToken ct)
+        private UnityWebRequest CreatePost(string path, object body, string idempotencyKey)
         {
-            using UnityWebRequest request
-                = UnityWebRequest.Post(Address + path, SerializeObject(body), "application/json");
+            UnityWebRequest request
+                = UnityWebRequest.Post(Address + path, JsonConvert.SerializeObject(body), JsonContentType);
 
-            UnityWebRequest response = await request.SendWebRequest().ToUniTask(cancellationToken: ct);
+            if (idempotencyKey != null)
+            {
+                request.SetRequestHeader(IdempotencyKeyHeader, idempotencyKey);
+            }
 
-            return response.downloadHandler.text;
+            return request;
         }
 
-        private string SerializeObject(object body) => JsonConvert.SerializeObject(body);
+        private async UniTask<string> SendAsync(UnityWebRequest request, CancellationToken cancellationToken)
+        {
+            using (request)
+            {
+                AddAuthorization(request);
+                UnityWebRequest response = await request.SendWebRequest().ToUniTask(cancellationToken: cancellationToken);
+                return response.downloadHandler.text;
+            }
+        }
+
+        private void AddAuthorization(UnityWebRequest request)
+        {
+            if (_session.IsAuthorized)
+            {
+                request.SetRequestHeader(AuthorizationHeader, $"Bearer {_session.AccessToken}");
+            }
+        }
     }
 }
