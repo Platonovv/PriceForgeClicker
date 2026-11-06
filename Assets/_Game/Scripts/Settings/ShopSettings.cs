@@ -15,11 +15,11 @@ namespace PriceForgeClicker.Settings
         public IReadOnlyList<ShopItemDefinition> Items => _items;
         public int LocalSaleMinutes => _localSaleMinutes;
 
-        public ShopItemDefinition FindBySku(string sku)
+        public ShopItemDefinition FindByProductId(string productId)
         {
             for (int i = 0; i < _items.Count; i++)
             {
-                if (_items[i].Sku == sku)
+                if (_items[i].ProductId == productId)
                 {
                     return _items[i];
                 }

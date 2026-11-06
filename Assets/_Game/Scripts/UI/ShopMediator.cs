@@ -57,10 +57,18 @@ namespace PriceForgeClicker.UI
 
         private async UniTaskVoid LoadOffersAsync(CancellationToken cancellationToken)
         {
-            _view.ShowStatus("Загрузка магазина...");
-            IReadOnlyList<ShopOffer> offers = await _shopService.GetOffersAsync(cancellationToken);
-            CreateElements(offers);
-            _view.HideStatus();
+            try
+            {
+                _view.ShowStatus("Загрузка магазина...");
+                IReadOnlyList<ShopOffer> offers = await _shopService.GetOffersAsync(cancellationToken);
+                CreateElements(offers);
+                _view.HideStatus();
+            }
+            catch (UnityWebRequestException e)
+            {
+                _view.ShowStatus($"Не удалось загрузить магазин");
+                Debug.LogWarning(e.ResponseCode);
+            }
         }
 
         private void CreateElements(IReadOnlyList<ShopOffer> offers)
@@ -70,7 +78,7 @@ namespace PriceForgeClicker.UI
 
             foreach (ShopOffer offer in offers)
             {
-                ShopItemDefinition definition = shopSettings.FindBySku(offer.Sku);
+                ShopItemDefinition definition = shopSettings.FindByProductId(offer.ProductId);
 
                 if (definition == null)
                 {

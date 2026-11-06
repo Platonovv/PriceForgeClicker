@@ -7,7 +7,7 @@ namespace PriceForgeClicker.Settings
     [Serializable]
     public sealed class ShopItemDefinition
     {
-        [SerializeField] private string _sku;
+        [SerializeField] private string _productId;
         [SerializeField] private string _title;
         [SerializeField] private Sprite _icon;
         [SerializeField] private UpgradeEffect _effect;
@@ -15,7 +15,7 @@ namespace PriceForgeClicker.Settings
         [SerializeField] private long _localPrice;
         [SerializeField] private int _localSalePercent;
 
-        public string Sku => _sku;
+        public string ProductId => _productId;
         public string Title => _title;
         public Sprite Icon => _icon;
         public UpgradeEffect Effect => _effect;

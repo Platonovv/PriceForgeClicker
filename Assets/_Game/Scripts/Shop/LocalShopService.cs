@@ -9,8 +9,8 @@ namespace PriceForgeClicker.Shop
 {
     public sealed class LocalShopService : IShopService
     {
-        private readonly ShopSettings _shopSettings;
         private readonly Wallet _wallet;
+        private readonly ShopSettings _shopSettings;
         private readonly DateTime _saleEndsAtUtc;
 
         public LocalShopService(AssetProvider assetProvider, Wallet wallet)
@@ -43,12 +43,12 @@ namespace PriceForgeClicker.Shop
         {
             if (item.LocalSalePercent <= 0)
             {
-                return new ShopOffer(item.Sku, item.LocalPrice, item.LocalPrice, null);
+                return new ShopOffer(item.ProductId, item.Title, item.LocalPrice, item.LocalPrice, null);
             }
 
             long salePrice = item.LocalPrice * (100 - item.LocalSalePercent) / 100;
 
-            return new ShopOffer(item.Sku, salePrice, item.LocalPrice, _saleEndsAtUtc);
+            return new ShopOffer(item.ProductId, item.Title, salePrice, item.LocalPrice, _saleEndsAtUtc);
         }
     }
 }

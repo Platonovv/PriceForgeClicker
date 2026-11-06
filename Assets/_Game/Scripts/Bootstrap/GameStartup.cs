@@ -39,11 +39,12 @@ namespace PriceForgeClicker.Bootstrap
             builder.Register<ApiClient>(Lifetime.Singleton);
             builder.Register<AuthApi>(Lifetime.Singleton);
             builder.Register<WalletApi>(Lifetime.Singleton);
+            builder.Register<GameApi>(Lifetime.Singleton);
             builder.Register<EarnSender>(Lifetime.Singleton);
             builder.Register<Wallet>(Lifetime.Singleton);
             builder.Register<ClickerState>(Lifetime.Singleton);
             builder.Register<ClickerService>(Lifetime.Singleton);
-            builder.Register<IShopService, LocalShopService>(Lifetime.Singleton);
+            builder.Register<IShopService, ServerShopService>(Lifetime.Singleton);
             builder.RegisterEntryPoint<AutoIncomeTicker>();
         }
 

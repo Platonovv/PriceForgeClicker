@@ -54,7 +54,7 @@ namespace PriceForgeClicker.UI
         private void ShowStaticInfo()
         {
             _icon.sprite = _definition.Icon;
-            _titleText.SetText(_definition.Title);
+            _titleText.SetText(_offer.Title);
             _effectText.SetText(DescribeEffect());
             _priceText.SetText($"{_offer.Price}");
             _oldPriceText.gameObject.SetActive(_offer.IsOnSale);
