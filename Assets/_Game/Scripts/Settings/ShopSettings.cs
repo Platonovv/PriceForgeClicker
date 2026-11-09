@@ -9,11 +9,7 @@ namespace PriceForgeClicker.Settings
         [Header("Items")]
         [SerializeField] private List<ShopItemDefinition> _items = new();
 
-        [Header("Local Sale")]
-        [SerializeField] private int _localSaleMinutes = 30;
-
         public IReadOnlyList<ShopItemDefinition> Items => _items;
-        public int LocalSaleMinutes => _localSaleMinutes;
 
         public ShopItemDefinition FindByProductId(string productId)
         {

@@ -5,6 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using PriceForgeClicker.Network;
 using PriceForgeClicker.Services;
+using UnityEngine;
 
 namespace PriceForgeClicker.Shop
 {
@@ -12,6 +13,9 @@ namespace PriceForgeClicker.Shop
     {
         private readonly GameApi _gameApi;
         private readonly Wallet _wallet;
+
+        private string _idempotencyKey;
+        private string _keyProductId;
 
         public ServerShopService(GameApi gameApi, Wallet wallet)
         {
@@ -32,13 +36,42 @@ namespace PriceForgeClicker.Shop
                             .ToList();
         }
 
-        public UniTask<PurchaseResult> PurchaseAsync(ShopOffer offer, CancellationToken cancellationToken)
+        public async UniTask<PurchaseResult> PurchaseAsync(ShopOffer offer, CancellationToken cancellationToken)
         {
-            PurchaseResult result = _wallet.TrySpend(offer.Price)
-                                        ? PurchaseResult.Success
-                                        : PurchaseResult.NotEnoughCoins;
+            try
+            {
+                if (_keyProductId != offer.ProductId)
+                {
+                    _keyProductId = offer.ProductId;
+                    _idempotencyKey = Guid.NewGuid().ToString();
+                }
 
-            return UniTask.FromResult(result);
+                PurchaseItemResponse purchase = await _gameApi.PurchaseAsync(offer.ProductId, _idempotencyKey, cancellationToken);
+                _wallet.SpendConfirmed(purchase.CoinPrice);
+                return ResetKey(PurchaseResult.Success);
+            }
+            catch (UnityWebRequestException e)
+            {
+                switch (e.ResponseCode)
+                {
+                    case 0:
+                    case >= 500:
+                        Debug.LogWarning($"{e.ResponseCode} {e.Text}");
+                        return PurchaseResult.Failed;
+                    case 400:
+                        return ResetKey(PurchaseResult.NotEnoughCoins);
+                    default:
+                        Debug.LogWarning($"{e.ResponseCode} {e.Text}");
+                        return ResetKey(PurchaseResult.Failed);
+                }
+            }
+        }
+
+        private PurchaseResult ResetKey(PurchaseResult result)
+        {
+            _idempotencyKey = null;
+            _keyProductId = null;
+            return result;
         }
     }
 }

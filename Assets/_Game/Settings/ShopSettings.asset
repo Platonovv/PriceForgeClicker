@@ -14,17 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PriceForgeClicker.Settings.ShopSettings
   _items:
   - _productId: 0b9d3c1e-6a51-4f7e-9c2a-3e5f1a7b8c02
-    _title: Speed Boost
     _icon: {fileID: 21300000, guid: 4193750d3963b314caad547e14753a18, type: 3}
     _effect: 1
     _effectValue: 1
-    _localPrice: 150
-    _localSalePercent: 0
   - _productId: 0b9d3c1e-6a51-4f7e-9c2a-3e5f1a7b8c01
-    _title: Golden Sword
     _icon: {fileID: 21300000, guid: ee89801b35359154c9149624b11b8d41, type: 3}
     _effect: 0
     _effectValue: 5
-    _localPrice: 500
-    _localSalePercent: 0
-  _localSaleMinutes: 30

@@ -47,7 +47,7 @@ namespace PriceForgeClicker.UI
 
         public void UpdateView()
         {
-            _buyButton.interactable = _wallet.Coins >= _offer.Price;
+            _buyButton.interactable = _wallet.ConfirmedCoins >= _offer.Price;
             UpdateSaleTimer();
         }
 

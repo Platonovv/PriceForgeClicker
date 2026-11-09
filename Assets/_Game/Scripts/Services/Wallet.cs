@@ -25,6 +25,8 @@ namespace PriceForgeClicker.Services
 
         public long PendingCoins { get; private set; }
 
+        public long ConfirmedCoins { get; private set; }
+
         public void Subscribe(Action listener) => OnChanged += listener;
 
         public void Unsubscribe(Action listener) => OnChanged -= listener;
@@ -42,17 +44,16 @@ namespace PriceForgeClicker.Services
             return pendingCoins;
         }
 
-        public void SetBalance(long balance) => Coins = balance;
-
-        public bool TrySpend(long amount)
+        public void SetBalance(long serverBalance)
         {
-            if (_coins < amount)
-            {
-                return false;
-            }
+            ConfirmedCoins = serverBalance;
+            Coins = serverBalance + PendingCoins;
+        }
 
+        public void SpendConfirmed(long amount)
+        {
+            ConfirmedCoins -= amount;
             Coins -= amount;
-            return true;
         }
     }
 }

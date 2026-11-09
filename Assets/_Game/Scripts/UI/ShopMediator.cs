@@ -101,12 +101,30 @@ namespace PriceForgeClicker.UI
             }
 
             _isPurchasing = true;
-            PurchaseResult result = await _shopService.PurchaseAsync(element.Offer, cancellationToken);
-            _isPurchasing = false;
+            _view.ShowStatus("Покупка...");
+            PurchaseResult result;
 
-            if (result == PurchaseResult.Success)
+            try
             {
-                _clickerService.ApplyUpgrade(element.Definition);
+                result = await _shopService.PurchaseAsync(element.Offer, cancellationToken);
+            }
+            finally
+            {
+                _isPurchasing = false;
+            }
+
+            switch (result)
+            {
+                case PurchaseResult.Success:
+                    _clickerService.ApplyUpgrade(element.Definition);
+                    _view.HideStatus();
+                    break;
+                case PurchaseResult.NotEnoughCoins:
+                    _view.ShowStatus("Не хватает монет");
+                    break;
+                case PurchaseResult.Failed:
+                    _view.ShowStatus("Ошибка покупки");
+                    break;
             }
         }
 

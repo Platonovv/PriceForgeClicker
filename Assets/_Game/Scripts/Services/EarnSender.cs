@@ -53,7 +53,7 @@ namespace PriceForgeClicker.Services
                     long balance = await _walletApi.EarnAsync(_currentBatch.Coins, _currentBatch.Key, ct);
 
                     _currentBatch = null;
-                    _wallet.SetBalance(balance + _wallet.PendingCoins);
+                    _wallet.SetBalance(balance);
                 }
                 catch (UnityWebRequestException e)
                 {
